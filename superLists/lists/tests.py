@@ -1,6 +1,7 @@
 from django.http import HttpRequest
 from django.core.urlresolvers import resolve
 from django.test import TestCase
+from django.shortcuts import render
 from lists.views import homePage
 
 
@@ -16,6 +17,7 @@ class HomePageTest(TestCase):
         response = homePage(request)
         if response:
             response = response.content.decode('UTF-8')
-        self.assertTrue(response.startswith('<!doctype'))
-        self.assertIn('<title>待辦事項清單</title>', response)
-        self.assertTrue(response.endswith('</html>'))
+        expectedHTML = render(request, 'lists/home.html')
+        if expectedHTML:
+            expectedHTML = expectedHTML.content.decode('UTF-8')
+        self.assertEqual(response, expectedHTML)
