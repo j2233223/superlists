@@ -14,10 +14,13 @@ class HomePageTest(TestCase):
         
     def test_homePage_returns_correct_HTML(self):
         request = HttpRequest()
+        request.method = 'POST'
+        request.POST['itemText'] = '新的項目'        
         response = homePage(request)
         if response:
             response = response.content.decode('UTF-8')
-        expectedHTML = render(request, 'lists/home.html')
+        self.assertIn('新的項目', response)
+        expectedHTML = render(request, 'lists/home.html', {'itemText':'新的項目'})
         if expectedHTML:
             expectedHTML = expectedHTML.content.decode('UTF-8')
         self.assertEqual(response, expectedHTML)

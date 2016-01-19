@@ -1,7 +1,7 @@
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import unittest
-
+import time
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -32,24 +32,32 @@ class NewVisitorTest(unittest.TestCase):
             '輸入一個待辦事項'
         )                
         # 她在文字框裡輸入了「買孔雀羽毛」(她的嗜好是做路亞假餌Fly-fishing lure)
-        inputBox.send_keys('買孔雀羽毛')        
+        inputBox.send_keys('買孔雀羽毛')
+   
         # 當她按下「送出」按鈕，頁面資訊更新，待辦事項清單裡多了一個項目：「買孔雀羽毛」
         inputBox.send_keys(Keys.ENTER)
         
         table = self.browser.find_element_by_id('listTable')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(
-            any(row.text=='買孔雀羽毛' for row in rows),
-            '新的待辦事項並未在表格中出現 -- 目前文字是：' + table.text,
-        )
+
+        self.assertIn('買孔雀羽毛', [row.text for row in rows])
         
         # 頁面另外還有一個文字框，邀請她再加入其他項目，她輸入了「利用孔雀羽毛來做一個路亞」
         # (彤彤做事很講究章法的)
-        self.fail('Finish the test！')   
-        # 頁面再次更新，現在待辦事項清單裡有兩個項目了
         
+        inputBox = self.browser.find_element_by_id('newItem')
+        inputBox.send_keys('利用孔雀羽毛來做一個路亞')
+        inputBox.send_keys(Keys.ENTER)
+         
+        # 頁面再次更新，現在待辦事項清單裡有兩個項目了
+        table = self.browser.find_element_by_id('listTable')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('買孔雀羽毛', [row.text for row in rows])
+        self.assertIn('利用孔雀羽毛來做一個路亞', [row.text for row in rows])
+         
         # 彤彤懷疑這個網站是否會記住她，她看到網站有為她產生專屬的URL，URL裡
         # 有一些說明文字
+        self.fail('Finish the test！') 
         
         # 她前往該URL，待辦清單依舊存在
         
