@@ -9,25 +9,52 @@ from lists.models import Item
 
 class HomePageTest(TestCase):
 
+
     def test_root_url_resolves_to_homePage_view(self):
         found = resolve('/')
         self.assertEqual(found.func, homePage)
+
 
     def test_homePage可以POST請求(self):
         request = HttpRequest()
         request.method = 'POST'
         request.POST['itemText'] = '新的項目'
+        homePage(request)
+        
+        self.assertEqual(Item.objects.count(), 1)
+        newItem = Item.objects.first()
+        self.assertEqual(newItem.text, '新的項目')
+        
+        
+    def test_homePage在POST之後轉址(self):
+        request = HttpRequest()
+        request.method = 'POST'
+        request.POST['itemText'] = '新的項目'
+        response = homePage(request)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response['location'], '/')
+        
+        
+    def test_homePage只在必要時儲存項目(self):
+        request = HttpRequest()
+        homePage(request)
+        self.assertEqual(Item.objects.count(), 0)
+     
+     
+    def test_homePage顯示出所有項目(self):
+        Item.objects.create(text='itemey 1')
+        Item.objects.create(text='itemey 2')
+        
+        request = HttpRequest()
         response = homePage(request)
         if response:
             response = response.content.decode('UTF-8')
-        expectedHTML = render(request, 'lists/home.html')
-        self.assertIn('新的項目', response)
-        expectedHTML = render(request, 'lists/home.html', {'itemText':'新的項目'})
-        if expectedHTML:
-            expectedHTML = expectedHTML.content.decode('UTF-8')
-        self.assertEqual(response, expectedHTML)
         
+        self.assertIn('itemey 1', response)
+        self.assertIn('itemey 2', response)
+                   
 class ItemModelTest(TestCase):
+    
     
     def test_儲存及提取項目(self):
         firstItem = Item()
