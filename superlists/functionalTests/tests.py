@@ -27,7 +27,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get(self.live_server_url)
 
         # 她注意到首頁的標題提到了待辦事項清單
-        # assert '待辦事項' in browser.title
+        # assert '待辦事項' in browser.title        
         self.assertIn('待辦事項', self.browser.title)
         headerText = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('待辦事項清單', headerText)
