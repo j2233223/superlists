@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^1b5_=oh7wodvzu2=y6h2ug770dy1i$_2!d1^vj3f01*dgcyd&'
+SECRET_KEY = 'z@i#jsq(c=62*)2u-@n690(2=9xs=l6tb4dd#-2&g%ql@d#%6i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -74,16 +74,16 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-ALLOWED_HOSTS = ['*']
+
 DATABASES = {
-  'default': {
+    'default': {
       'ENGINE': 'django.db.backends.postgresql_psycopg2',
       'NAME': 'superlistsDB',
       'USER': 'superlists',
       'PASSWORD': 'superlists',
       'HOST': 'localhost',
       'PORT': '',
-  }
+    }
 }
 
 
@@ -108,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
-
 
 LANGUAGE_CODE = 'zh-hant'
 

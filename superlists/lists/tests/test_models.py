@@ -1,18 +1,13 @@
-from django.core.urlresolvers import resolve, reverse
-from django.http import HttpRequest
-from django.shortcuts import render
 from django.test import TestCase
-from selenium.webdriver.common.keys import Keys
-
-from lists.models import Item, List 
-from lists.views import homePage
+from django.core.exceptions import ValidationError
+from lists.models import Item, List
 
 
-# Create your tests here.
+
 class ListAndItemModelTest(TestCase):
-    
-    
-    def test_saving_and_retrieving_items(self):
+
+
+    def test_可以儲存及取出清單項目(self):
         list_ = List()
         list_.save()
         
@@ -25,13 +20,12 @@ class ListAndItemModelTest(TestCase):
         secondItem.text = '第二個清單項目'
         secondItem.list = list_
         secondItem.save()
-        
-        savedList = List.objects.first()
-        self.assertEqual(savedList, list_)
-        
-        savedItems = Item.objects.all()
 
-        self.assertEqual(savedItems.count(), 2)
+        savedList = List.objects.first()
+        self.assertEqual(savedList, list_)    
+                
+        savedItems = Item.objects.all()
+        self.assertEqual(savedItems.count(), 2)    
         
         firstSavedItem = savedItems[0]
         secondSavedItem = savedItems[1]
@@ -39,3 +33,18 @@ class ListAndItemModelTest(TestCase):
         self.assertEqual(firstSavedItem.list, list_)
         self.assertEqual(secondSavedItem.text, '第二個清單項目')
         self.assertEqual(secondSavedItem.list, list_)
+
+
+    def test_不能儲存空的清單項目(self):
+        list_ = List.objects.create()
+        item = Item(text='', list=list_)
+        with self.assertRaises(ValidationError):
+            item.save()
+            item.full_clean()
+        
+        
+        
+        
+        
+        
+          

@@ -2,10 +2,9 @@ from django.conf.urls import url
 from lists import views
 
  
-urlpatterns = [    
-    url(r'(?P<listID>[0-9]+)/addItem/', views.addItem, name='addItem'),    
-    url(r'^(?P<listID>[0-9]+)/$', views.viewList, name='viewList'),
-    url(r'^new/$', views.newList, name='newList'),
+urlpatterns = [
     url(r'^$', views.homePage, name='homePage'),
-    
+    #url(r'^the-only-list-in-the-world/$', views.viewList, name='viewList'),
+    url(r'^(?P<listID>[0-9]+)/$', views.viewList, name='viewList'),
+    url(r'^new/', views.newList, name='newList'),
 ]

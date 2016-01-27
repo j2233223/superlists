@@ -2,8 +2,8 @@ from .base import FunctionalTest
 
 
 class LayoutStylingTest(FunctionalTest):
-
-
+    
+    
     def test_layout_and_styling(self):
         # 彤彤前往首頁
         self.browser.get(self.live_server_url)
